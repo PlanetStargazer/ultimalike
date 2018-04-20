@@ -7,7 +7,8 @@ player = {
           name="Stranger",
           hpmax=300,
           hpcurrent=300,
-          time=0
+          time=0,
+          is_slowed = false
   
   }
 
@@ -104,41 +105,58 @@ end
 
 function traversable(px,py)
 blocked = {0,1,2,8}
-
 tileid = gettileid(px,py)
-print (tileid , "-" , px, "/" , py)
-if inTable(blocked, tileid)==true then return false else return true end
+if inTable(blocked, tileid)==true then 
+  return false 
+else
+  return true
+end
+end
 
-
+function slowed(px,py)
+blocked = {0,1,2,8}
+slow = {6,7}
+tileid = gettileid(px,py)
+if  inTable(slow,tileid)==true then 
+  return true
+else 
+  return false 
+  end
 end
 
 
+function move_player(tx,ty)
+  if traversable(tx,ty)==true and slowed(tx,ty)==false then
+  player.x=tx
+  player.y=ty
+elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==true then
+  player.x=tx
+  player.y=ty
+  player.is_slowed=false
+elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==false then     
+  player.is_slowed=true
+ end
 
+player.time=player.time+1
+
+end
+
+ 
 function love.keypressed( key )
    if key == "ESC" then
       love.quit()
    end
    
-   if key == "up" and traversable(player.x,player.y-1)==true then
-     player.y=player.y-1
-     player.time=player.time+1
-end
-
-if key == "down" and traversable(player.x,player.y+1)==true then
-     player.y=player.y+1
-     player.time=player.time+1
-end
-
-if key == "left" and traversable(player.x-1,player.y)==true then
-     player.x=player.x-1
-     player.time=player.time+1
-end
-
-if key == "right" and traversable(player.x+1,player.y)==true then
-     player.x=player.x+1
-     player.time=player.time+1
-end
-
+   if key == "up" then
+     move_player(player.x,player.y-1)
+   elseif key=="down" then
+   move_player(player.x,player.y+1)
+ elseif key=="left" then
+   move_player(player.x-1,player.y)
+ elseif key=="right" then
+   move_player(player.x+1,player.y)
+   end
+   
 
 end
 
@@ -172,6 +190,14 @@ function draw_info()
   
   text = "Time: "..player.time
   love.graphics.print(text, 168, 3)
+  
+  if player.is_slowed==true then
+    love.graphics.print(" Slowed", 480, 136)
+    
+  elseif player.is_slowed==false then
+    love.graphics.print("", 480, 136)
+    end
+  
   end
 
 
