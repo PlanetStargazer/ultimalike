@@ -129,6 +129,7 @@ function move_player(tx,ty)
   if traversable(tx,ty)==true and slowed(tx,ty)==false then
   player.x=tx
   player.y=ty
+  player.is_slowed=false
 elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==true then
   player.x=tx
   player.y=ty
