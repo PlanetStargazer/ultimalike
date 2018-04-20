@@ -2,6 +2,8 @@ require ("table")
 require ("math")
 
 col_lightgrey={150, 150, 150, 255}
+col_red={255,0,0,255}
+
 
 -- DATA SECTION
 
@@ -13,10 +15,12 @@ player = {
           y=10,
           name="Stranger",
           hpmax=300,
-          hpcurrent=300,
+          hp=300,
           time=0,
-          is_slowed = false
-  
+          is_slowed = false,
+          tile = {32,33},
+          status="G",
+          current_map = {}
 }
 
 
@@ -52,7 +56,35 @@ map_overworld = {
       }
 
 
-current_map = map_overworld
+map_overworld2 = {
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 12, 5, 5, 5, 4, 5, 5, 5, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 4, 4, 4, 5, 5, 5, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 5, 5, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 5, 5, 4, 14, 15, 16, 5, 5, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 6, 6, 6, 5, 4, 4, 5, 5, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 7, 7, 7, 6, 5, 5, 5, 5, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 6, 6, 7, 7, 7, 6, 5, 5, 5, 5, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 5, 5, 3, 3, 7, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 5, 5, 3, 2, 3, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 5, 5, 5, 3, 2, 3, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 5, 5, 5, 3, 2, 3, 6, 6, 6, 6, 5, 5, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 5, 11, 5, 3, 2, 3, 6, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      }
+
+
 
 
 
@@ -69,13 +101,19 @@ function init_graphics()
   scaler = 2
   
   
-  
+  player.current_map=map_overworld
+ 
  end
  
+ 
+ -- gamestate = "INTRO"
+ gamestate = "INTRO"
  
 function draw_gui()
      love.graphics.draw(gui,0,0,0) 
 end
+
+
 
 
 function love.load()
@@ -83,7 +121,9 @@ function love.load()
 
 music_01 = love.audio.newSource("assets/sound/Trouble-in-the-Kingdom_Looping.mp3")
 music_01:setLooping(true)
-music_01:play()
+
+music_02 = love.audio.newSource("assets/sound/RPG-Map-Music.mp3")
+music_02:setLooping(true)
 
 
 love.graphics.setDefaultFilter("nearest","nearest")
@@ -120,7 +160,7 @@ end
 
 function gettileid(tx,ty)
   local i=(tx+ty*25)+1
-  local id=current_map[i]-1
+  local id=player.current_map[i]-1
 return id
 end
 
@@ -145,6 +185,39 @@ else
   end
 end
 
+function check_d6(dv)
+roll = math.random (6)
+
+add_to_log("Roll: "..roll)
+
+if roll>=dv then 
+  return true 
+else return false 
+  end
+end
+
+function check_ground(px,py)
+tileid = gettileid(px,py)
+if tileid == 3 then 
+  -- check for poison
+  if player.status~="P" and check_d6(2)==false then 
+    player.status="P" 
+    add_to_log({col_red,"Poisoned!"})
+    end
+end  
+end
+
+
+function status()
+
+
+-- Poison Effect
+if player.status=="P" then
+  player.hp=player.hp-5
+end
+
+
+end
 
 function move_player(tx,ty)
   if traversable(tx,ty)==true and slowed(tx,ty)==false then
@@ -157,23 +230,45 @@ elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==tr
   player.y=ty
   player.is_slowed=false
   player.time=player.time+1
-  add_to_log({col_lightgrey,"Slow Movement!"})
-elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==false then     
+  elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==false then     
   player.is_slowed=true
+  add_to_log({col_lightgrey,"Slow Progress!"})
   player.time=player.time+1
 elseif traversable(tx,ty)==false then
   add_to_log({col_lightgrey,"Blocked!"})
 end
 
-
+check_ground(player.x,player.y)
+status()
 end
 
  
 function love.keypressed( key )
-   if key == "ESC" then
-      love.quit()
-   end
+  dtotal = 0
+  
+  if gamestate=="INTRO" then
+    
+    if key=="return" then
+      music_01:stop()
+      gamestate="MAP"
+      music_02:play()
+      end  
+    
+    if key=="escape" then
+      love.event.quit() 
+    end  
+    
+    
+  end
+  
+  
+  
+  if gamestate=="MAP" then
+  
+  
+
    
+      
    if key == "up" then
      move_player(player.x,player.y-1)
      add_to_log("North")
@@ -186,9 +281,15 @@ function love.keypressed( key )
  elseif key=="right" then
    move_player(player.x+1,player.y)
    add_to_log("East")
+  elseif key=="escape" then
+      music_02:stop()
+      gamestate="INTRO"
+      music_01:play()
    end
    
 
+   
+end
 end
 
 
@@ -225,7 +326,7 @@ end
 
 function draw_info()
   local i=(player.x+player.y*25)+1
-  local id=current_map[i]-1
+  local id=player.current_map[i]-1
   local text = "Tile ID: " .. id
   love.graphics.print(text, 400, 136)
   love.graphics.draw(tileset, tile[id], 466, 136)
@@ -233,8 +334,10 @@ function draw_info()
   text="X: "..player.x..", Y: "..player.y
   love.graphics.print(text, 532, 136)
   
-  text = player.name
+  text = "1 - "..player.name
+  text2 = player.hp .. "/" .. player.hpmax .. player.status
   love.graphics.print(text, 400, 32)
+  love.graphics.printf(text2, 400, 32,200,"right")
   
   text = "Time: "..player.time
   love.graphics.print(text, 168, 3)
@@ -247,30 +350,98 @@ local ox =8
 local oy =8 
 love.graphics.draw(tileset, tile[tileid], tx*16+ox, ty*16+oy)
 
-  end
-
-
-
-function love.update(dt)
 end
 
 
-function love.draw()
-love.graphics.push()
+
+function draw_player(x,y)
+i = player.time % 2
+draw_tile(x,y,player.tile[i+1])  
+end
+
+
+
+dtotal = 0
+
+function pass_time()
+
+if dtotal >= 5 then 
+  dtotal=dtotal-5
+  player.time=player.time+1
+  add_to_log("Pass")
+  status()
+end
+end
+
+function love.update(dt)
+dtotal = dtotal + dt
+
+if gamestate == "MAP" then
   
+  pass_time()
+  
+end  
+
+end
+
+function printtile(text,x,y)
+  
+  length = string.len(text)
+  
+  
+  for i=1,length do
+    
+    character = string.sub(text,i)
+    byten=string.byte(character)
+    if byten==32 then byten=91 end
+    love.graphics.draw(tileset, tile[byten+31], x+i*16, y)
+    
+  end
+  
+end
+
+
+
+
+function draw_intro()
+ music_01:play()
+ 
+ text = "i_]PROJECT ULTIMALIKE\\_k"
+  
+  printtile (text,120,100)
+  love.graphics.print ("Press ENTER to start",260,160)
+  love.graphics.print ("Press ESCAPE to quit",260,180) 
+end
+
+
+
+function draw_mapstuff()
+love.graphics.push()
 love.graphics.scale(scaler,scaler)
 
 
---draw_tile(0,0,0)
+
 draw_map(player.x,player.y)
-draw_tile(player.x,player.y,31)
+draw_player(player.x,player.y)
 
 love.graphics.pop()
 draw_gui()
 draw_info()
 draw_log()
+
 end
 
 
-  
+
+function love.draw()
+
+if gamestate == "MAP" then
+draw_mapstuff()
+end
+
+if gamestate == "INTRO" then 
+draw_intro()
+end
+
+  end
   
