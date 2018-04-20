@@ -1,4 +1,11 @@
+require ("table")
+require ("math")
+
+col_lightgrey={150, 150, 150, 255}
+
 -- DATA SECTION
+
+log={"Welcome!"," ","Music by Eric Matyas","www.soundimage.org"," "," "," "," "," "," "," "," "}
 
 
 player = {
@@ -10,7 +17,11 @@ player = {
           time=0,
           is_slowed = false
   
-  }
+}
+
+
+
+
 
 map_overworld = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -41,7 +52,7 @@ map_overworld = {
       }
 
 
-
+current_map = map_overworld
 
 
 
@@ -52,9 +63,12 @@ function init_graphics()
   
   -- set Scaling to nearest
   love.graphics.setDefaultFilter("nearest")
+     
   
   -- set Scale
   scaler = 2
+  
+  
   
  end
  
@@ -65,6 +79,13 @@ end
 
 
 function love.load()
+-- Load Music, SFX, all that jazz
+
+music_01 = love.audio.newSource("assets/sound/Trouble-in-the-Kingdom_Looping.mp3")
+music_01:setLooping(true)
+music_01:play()
+
+
 love.graphics.setDefaultFilter("nearest","nearest")
 
 -- load artwork assets
@@ -99,7 +120,7 @@ end
 
 function gettileid(tx,ty)
   local i=(tx+ty*25)+1
-  local id=map_overworld[i]-1
+  local id=current_map[i]-1
 return id
 end
 
@@ -130,15 +151,20 @@ function move_player(tx,ty)
   player.x=tx
   player.y=ty
   player.is_slowed=false
+  player.time=player.time+1
 elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==true then
   player.x=tx
   player.y=ty
   player.is_slowed=false
+  player.time=player.time+1
+  add_to_log({col_lightgrey,"Slow Movement!"})
 elseif traversable(tx,ty)==true and slowed(tx,ty)==true and player.is_slowed==false then     
   player.is_slowed=true
- end
+  player.time=player.time+1
+elseif traversable(tx,ty)==false then
+  add_to_log({col_lightgrey,"Blocked!"})
+end
 
-player.time=player.time+1
 
 end
 
@@ -150,12 +176,16 @@ function love.keypressed( key )
    
    if key == "up" then
      move_player(player.x,player.y-1)
+     add_to_log("North")
    elseif key=="down" then
    move_player(player.x,player.y+1)
+   add_to_log("South")
  elseif key=="left" then
    move_player(player.x-1,player.y)
+   add_to_log("West")
  elseif key=="right" then
    move_player(player.x+1,player.y)
+   add_to_log("East")
    end
    
 
@@ -178,27 +208,37 @@ end
 
 end
 
+
+
+
+
+function draw_log()
+  for i=1, table.getn(log) do
+  love.graphics.printf(log[i],400,176+i*16,220)  
+  end
+end
+
+function add_to_log(text)
+table.remove(log,1)
+table.insert(log,text)
+end
+
 function draw_info()
   local i=(player.x+player.y*25)+1
-  local id=map_overworld[i]-1
+  local id=current_map[i]-1
   local text = "Tile ID: " .. id
   love.graphics.print(text, 400, 136)
   love.graphics.draw(tileset, tile[id], 466, 136)
   
+  text="X: "..player.x..", Y: "..player.y
+  love.graphics.print(text, 532, 136)
   
   text = player.name
   love.graphics.print(text, 400, 32)
   
   text = "Time: "..player.time
   love.graphics.print(text, 168, 3)
-  
-  if player.is_slowed==true then
-    love.graphics.print(" Slowed", 480, 136)
     
-  elseif player.is_slowed==false then
-    love.graphics.print("", 480, 136)
-    end
-  
   end
 
 
@@ -228,6 +268,7 @@ draw_tile(player.x,player.y,31)
 love.graphics.pop()
 draw_gui()
 draw_info()
+draw_log()
 end
 
 
