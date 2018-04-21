@@ -5,9 +5,27 @@ col_lightgrey={150, 150, 150, 255}
 col_red={255,0,0,255}
 
 
+dtotal = 0
+dtotal2 = 0
+
+cframe = 0  
+delay = 0.5
+
 -- DATA SECTION
 
 log={"Welcome!"," ","Music by Eric Matyas","www.soundimage.org"," "," "," "," "," "," "," "," "}
+
+
+mob ={}
+
+bandit = {
+         x=10,
+         y=15,
+         name="Bandit",
+         hpmax=150,
+         hp=150,
+         tile={200,201}
+         }
 
 
 player = {
@@ -56,33 +74,7 @@ map_overworld = {
       }
 
 
-map_overworld2 = {
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 12, 5, 5, 5, 4, 5, 5, 5, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 4, 4, 4, 5, 5, 5, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 5, 5, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 5, 5, 4, 14, 15, 16, 5, 5, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 6, 6, 6, 5, 4, 4, 5, 5, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 6, 7, 7, 7, 6, 5, 5, 5, 5, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 6, 6, 7, 7, 7, 6, 5, 5, 5, 5, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 5, 5, 3, 3, 7, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 5, 5, 3, 2, 3, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 5, 5, 5, 3, 2, 3, 7, 7, 7, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 5, 5, 5, 3, 2, 3, 6, 6, 6, 6, 5, 5, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 5, 11, 5, 3, 2, 3, 6, 6, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-      }
+
 
 
 
@@ -102,7 +94,7 @@ function init_graphics()
   
   
   player.current_map=map_overworld
- 
+  spawn_monster(bandit,9,4)
  end
  
  
@@ -354,14 +346,57 @@ end
 
 
 
+function spawn_monster(enemy,x,y)
+enemy.x=x
+enemy.y=y
+table.insert(mob, enemy)
+end
+
+function remove_monster(enemy,x,y)
+table.remove(mob, enemy)
+end
+
 function draw_player(x,y)
-i = player.time % 2
-draw_tile(x,y,player.tile[i+1])  
+animate_tiles({player.tile[1],player.tile[2]},player.x*16+8,player.y*16+8)  
+end
+
+function draw_mob(monster)
+animate_tiles({monster.tile[1],monster.tile[2]},monster.x*16+8,monster.y*16+8)
+end
+
+function draw_enemies()
+n=table.getn(mob)
+for i=1,n do
+  draw_mob(mob[i])
+end  
+
 end
 
 
 
-dtotal = 0
+function animate_tiles(frame_ids,x,y)
+
+
+local totalframes = table.getn(frame_ids)
+  
+love.graphics.draw(tileset, tile[frame_ids[cframe+1]], x, y) 
+
+
+
+
+if dtotal2 > delay then
+cframe=cframe+1
+dtotal2=dtotal2-delay
+end
+
+if cframe>=totalframes then cframe=0 end
+ 
+
+  
+end
+
+
+
 
 function pass_time()
 
@@ -375,6 +410,9 @@ end
 
 function love.update(dt)
 dtotal = dtotal + dt
+dtotal2 = dtotal2 + dt
+
+
 
 if gamestate == "MAP" then
   
@@ -404,13 +442,25 @@ end
 
 
 function draw_intro()
+ love.graphics.push()
  music_01:play()
+ love.graphics.scale(scaler,scaler)
  
- text = "i_]PROJECT ULTIMALIKE\\_k"
-  
-  printtile (text,120,100)
-  love.graphics.print ("Press ENTER to start",260,160)
+ animate_tiles({138,139},10,10)
+ animate_tiles({84,85},294,10)
+ animate_tiles({82,83},10,174)
+ animate_tiles({94,95},294,174)
+ 
+ text = "PROJECT ULTIMALIKE"
+ printtile (text,2,40)
+ love.graphics.pop() 
+
+ 
+ love.graphics.print ("Press ENTER to start",260,160)
   love.graphics.print ("Press ESCAPE to quit",260,180) 
+  
+  
+ 
 end
 
 
@@ -422,8 +472,8 @@ love.graphics.scale(scaler,scaler)
 
 
 draw_map(player.x,player.y)
+draw_enemies()
 draw_player(player.x,player.y)
-
 love.graphics.pop()
 draw_gui()
 draw_info()
