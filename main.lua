@@ -111,10 +111,11 @@ end
 function love.load()
 -- Load Music, SFX, all that jazz
 
-music_01 = love.audio.newSource("assets/sound/Trouble-in-the-Kingdom_Looping.mp3")
+local m1="assets/sound/Trouble-in-the-Kingdom_Looping.mp3"
+music_01 = love.audio.newSource(m1,"stream")
 music_01:setLooping(true)
 
-music_02 = love.audio.newSource("assets/sound/RPG-Map-Music.mp3")
+music_02 = love.audio.newSource("assets/sound/RPG-Map-Music.mp3","stream")
 music_02:setLooping(true)
 
 
@@ -243,7 +244,7 @@ function love.keypressed( key )
     if key=="return" then
       music_01:stop()
       gamestate="MAP"
-      music_02:play()
+      --music_02:play()
       end  
     
     if key=="escape" then
@@ -276,7 +277,7 @@ function love.keypressed( key )
   elseif key=="escape" then
       music_02:stop()
       gamestate="INTRO"
-      music_01:play()
+      --music_01:play()
    end
    
 
@@ -443,7 +444,7 @@ end
 
 function draw_intro()
  love.graphics.push()
- music_01:play()
+ --music_01:play()
  love.graphics.scale(scaler,scaler)
  
  animate_tiles({138,139},10,10)
@@ -475,7 +476,7 @@ draw_map(player.x,player.y)
 draw_enemies()
 draw_player(player.x,player.y)
 love.graphics.pop()
-draw_gui()
+-- draw_gui()
 draw_info()
 draw_log()
 
